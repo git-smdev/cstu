@@ -187,9 +187,9 @@ print("gradients[\"dby\"][1] =", gradients["dby"][1])
 print("a_last[4] =", a_last[4])
 
 
-def model(data, ix_to_char, char_to_ix, num_iterations = 35000, n_a = 50, dino_names = 7, vocab_size = 27):
+def model(data, ix_to_char, char_to_ix, num_iterations = 35000, n_a = 50, names = 7, vocab_size = 27):
     """
-    Trains the model and generates dinosaur names. 
+    Trains the model and generates names. 
     
     Arguments:
     data -- text corpus
@@ -197,7 +197,7 @@ def model(data, ix_to_char, char_to_ix, num_iterations = 35000, n_a = 50, dino_n
     char_to_ix -- dictionary that maps a character to an index
     num_iterations -- number of iterations to train the model for
     n_a -- number of units of the RNN cell
-    dino_names -- number of dinosaur names you want to sample at each iteration. 
+    names -- number of names you want to sample at each iteration. 
     vocab_size -- number of unique characters found in the text, size of the vocabulary
     
     Returns:
@@ -211,14 +211,14 @@ def model(data, ix_to_char, char_to_ix, num_iterations = 35000, n_a = 50, dino_n
     parameters = initialize_parameters(n_a, n_x, n_y)
     
     # Initialize loss (this is required because we want to smooth our loss, don't worry about it)
-    loss = get_initial_loss(vocab_size, dino_names)
+    loss = get_initial_loss(vocab_size, names)
     
-    # Build list of all dinosaur names (training examples).
+    # Build list of all names (training examples).
     with open("fnames.txt") as f:
         examples = f.readlines()
     examples = [x.lower().strip() for x in examples]
     
-    # Shuffle list of all dinosaur names
+    # Shuffle list of all names
     np.random.seed(0)
     np.random.shuffle(examples)
     
@@ -245,9 +245,9 @@ def model(data, ix_to_char, char_to_ix, num_iterations = 35000, n_a = 50, dino_n
             
             print('Iteration: %d, Loss: %f' % (j, loss) + '\n')
             
-            # The number of dinosaur names to print
+            # The number of names to print
             seed = 0
-            for name in range(dino_names):
+            for name in range(names):
                 
                 # Sample indices and print them
                 sampled_indices = sample(parameters, char_to_ix, seed)
